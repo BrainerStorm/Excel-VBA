@@ -1,0 +1,57 @@
+' Verifica se á células duplicadas caso haja ele ira insistir em aviso até o usuário desfazer a duplicidade
+Public Sub VerificarDuplicatasEmLoopColum_A()
+    Dim cel As Range
+    Dim rng As Range
+    Dim duplicatas As String
+    Dim resposta As Integer
+    
+    Do
+        ' Define a área da planilha a ser verificada
+        Set rng = ActiveSheet.Range("A1:A66") 
+        ' Limpa a variável de duplicatas
+        duplicatas = "" 
+        
+        For Each cel In rng 
+            ' Itera sobre cada célula na área definida
+            If WorksheetFunction.CountIf(rng, cel.Value) > 1 Then 
+                ' Verifica se o valor da célula está duplicado
+                duplicatas = duplicatas & cel.Address & ": " & cel.Value & vbNewLine ' Armazena o endereço e o valor duplicado na variável
+            End If
+        Next cel
+        
+        If duplicatas <> "" Then 
+            ' Se houver duplicatas, exibe a mensagem
+            resposta = MsgBox("As seguintes células estão duplicadas:" & vbNewLine & duplicatas & vbNewLine & _
+                              "Deseja continuar verificando?", vbYesNo + vbExclamation, "Duplicatas Encontradas")
+
+            ' Caso queira adicionar uma ação direta
+            
+        Else 
+            ' Se não houver duplicatas, exibe uma mensagem informando
+            'resposta = MsgBox("Não foram encontradas células duplicadas na planilha." & vbNewLine & _
+                              "Deseja continuar verificando?", vbYesNo + vbInformation, "Sem Duplicatas")
+        End If
+    Loop While resposta = vbYes
+End Sub
+
+' Redimensiona os comentarios de forma automatica e determina o tamanho da fonte.
+Public Sub RedimensionarComentarios()
+    Dim ws As Worksheet
+    Dim cmt As Comment
+    Dim fontsz As Integer
+    
+    ' Declara os valores das variaveis
+    fontsz = 13
+    
+    
+    ' Iterar sobre todas as planilhas na pasta de trabalho
+    For Each ws In ThisWorkbook.Worksheets
+        ' Iterar sobre todas as células com comentários
+        For Each cmt In ws.Comments
+            ' Definir a altura da caixa de comentário com base no tamanho do texto
+            cmt.Shape.TextFrame.AutoSize = True
+            ' Fonte
+            cmt.Shape.TextFrame.Characters.Font.Size = fontsz
+        Next cmt
+    Next ws
+End Sub
