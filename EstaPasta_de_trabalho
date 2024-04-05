@@ -1,0 +1,6 @@
+
+'Aqui voce chama as macros para ficarem em loop
+Private Sub Workbook_SheetChange(ByVal Sh As Object, ByVal Target As Range)
+    VerificarDuplicatasEmLoopColum_A
+    RedimensionarComentarios
+End Sub
